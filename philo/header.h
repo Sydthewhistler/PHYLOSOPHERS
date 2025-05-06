@@ -6,7 +6,7 @@
 /*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:50:12 by scavalli          #+#    #+#             */
-/*   Updated: 2025/05/02 17:32:33 by scavalli         ###   ########.fr       */
+/*   Updated: 2025/05/06 17:02:08 by scavalli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 #include <sys/time.h>
+#include <stdbool.h>
 
 typedef struct s_tdata
 {
@@ -35,15 +36,21 @@ typedef struct s_targs
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_times_each_philosopher_must_eat;
+	bool			*end;
 	struct timeval	start_time;
 	struct timeval	last_meal;
 	t_tdata			*data;
-	t_targs			*neighbor;
+	struct s_targs	*neighbor;
 }					t_targs;
 
 void				error(char *str);
 int					ft_atoi(const char *str);
+int					ft_strcmp(const char *s1, const char *s2);
+long				time_c(t_targs *thread_args);
+void				display_status(long msec, t_targs	*thread_args, char *str);
 
-void				thread_process(void *args);
+void				*thread_process(void *args);
+
+
 
 #endif
