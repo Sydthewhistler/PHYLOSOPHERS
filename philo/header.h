@@ -6,7 +6,7 @@
 /*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:50:12 by scavalli          #+#    #+#             */
-/*   Updated: 2025/05/06 17:02:08 by scavalli         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:52:13 by scavalli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ typedef struct s_tdata
 	pthread_mutex_t	mutex;
 }					t_tdata;
 
+typedef struct s_end
+{
+	bool			end;
+	pthread_mutex_t	mutex;
+}					t_end;
+
 typedef struct s_targs
 {
 	int				id;
@@ -36,10 +42,10 @@ typedef struct s_targs
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				number_of_times_each_philosopher_must_eat;
-	bool			*end;
 	struct timeval	start_time;
 	struct timeval	last_meal;
 	t_tdata			*data;
+	t_end			*is_dead;
 	struct s_targs	*neighbor;
 }					t_targs;
 

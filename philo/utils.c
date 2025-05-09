@@ -6,7 +6,7 @@
 /*   By: scavalli <scavalli@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 16:58:45 by scavalli          #+#    #+#             */
-/*   Updated: 2025/05/06 17:28:21 by scavalli         ###   ########.fr       */
+/*   Updated: 2025/05/09 17:57:39 by scavalli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,35 @@
 
 long	time_c(t_targs *thread_args)
 {
-	struct timeval now;
-	long seconds;
-	long useconds;
-	long msec;
+	struct timeval	now;
+	long			seconds;
+	long			useconds;
+	long			msec;
 
 	gettimeofday(&now, NULL);
 	seconds = now.tv_sec - thread_args->start_time.tv_sec;
-	useconds = now.tv_usec - thread_args->start_time.tv_usec;\
+	useconds = now.tv_usec - thread_args->start_time.tv_usec;
 	msec = (seconds * 1000) + (useconds / 1000);
 	return (msec);
 }
 
-void	display_status(long msec, t_targs	*thread_args, char *str)
+void	display_status(long msec, t_targs *thread_args, char *str)
 {
-	if(*(thread_args->end) != true || ft_strcmp("died", str) == 0)
+	pthread_mutex_lock(&thread_args->is_dead->mutex);
+	if (thread_args->is_dead->end != true || ft_strcmp("\033[1;31mdied\033[0m",
+			str) == 0)
+	{
 		printf("%ldms %d %s\n", msec, thread_args->id + 1, str);
+		pthread_mutex_unlock(&thread_args->is_dead->mutex);
+		return ;
+	}
+	pthread_mutex_unlock(&thread_args->is_dead->mutex);
 	return ;
 }
 
 void	error(char *str)
 {
-	int i;
-	
-	i = 0;
-	while (str[i])
-	{
-		write(1, &str[i], 1);
-		i++;
-	}
-	
+	printf("%s\n", str);
 }
 
 int	ft_atoi(const char *str)
@@ -73,7 +72,7 @@ int	ft_atoi(const char *str)
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
-	size_t	i;
+	size_t i;
 
 	i = 0;
 	while (s1[i] || s2[i])
